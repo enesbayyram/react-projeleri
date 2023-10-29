@@ -1,0 +1,10 @@
+.postsDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.post{
+  margin:10px 0px
+}
