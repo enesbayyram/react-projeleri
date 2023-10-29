@@ -18,10 +18,10 @@ function Navbar() {
     navigate("/auth");
   };
 
-  const goUserPage = ()=>{
-    navigate(`/users/${localStorage.getItem("userId")}`)
+  const goUserPage = () => {
+    navigate(`/users/${localStorage.getItem("userId")}`);
     window.location.reload();
-  }
+  };
   return (
     <AppBar>
       <Toolbar>
@@ -40,7 +40,9 @@ function Navbar() {
           </Link>
         </Typography>
         {localStorage.getItem("userId") && (
-          <Button color="inherit" onClick={()=>goUserPage()}>Profil</Button>
+          <Button color="inherit" onClick={() => goUserPage()}>
+            Profil
+          </Button>
         )}
         {localStorage.getItem("userId") ? (
           <Button color="inherit" onClick={() => logout()}>
