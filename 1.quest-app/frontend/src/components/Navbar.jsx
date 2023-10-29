@@ -19,6 +19,7 @@ function Navbar() {
   };
 
   const goUserPage = () => {
+    console.log("xx");
     navigate(`/users/${localStorage.getItem("userId")}`);
     window.location.reload();
   };

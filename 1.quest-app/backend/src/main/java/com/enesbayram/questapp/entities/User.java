@@ -37,6 +37,7 @@ public class User extends BaseEntity implements UserDetails{
 	@Column(name = "avatar")
 	private Integer avatar;
 	
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.emptyList();
