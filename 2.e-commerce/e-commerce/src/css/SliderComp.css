@@ -1,0 +1,27 @@
+.slider-left-text {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-title {
+  font-size: 50px;
+  margin: 10px 0px;
+}
+
+.desc {
+  font-size: 20px;
+  margin: 20px 0px;
+}
+
+.analyze {
+  margin: 20px 10px;
+  font-size: 15px;
+  background-color: rgba(51, 45, 45, 0.771);
+  width: 100px;
+  padding: 10px;
+  border-radius: 30px;
+  text-align: center;
+  color: #fff;
+}
