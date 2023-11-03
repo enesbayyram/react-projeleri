@@ -23,7 +23,7 @@ public class RefreshTokenServiceImpl implements IRefreshTokenService {
 	public RefreshToken createRefreshToken(User user) {
 		RefreshToken savedRefreshToken =  RefreshToken.builder()
 		.refreshToken(UUID.randomUUID().toString())
-		.expiredDate(Date.from(Instant.now().plusMillis(60*1000*10)))
+		.expiredDate(Date.from(Instant.now().plusMillis(60*1000*120)))
 		.user(user)
 		.build();
 		return refreshTokenRepository.save(savedRefreshToken);

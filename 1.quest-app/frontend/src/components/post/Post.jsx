@@ -74,10 +74,6 @@ function Post({ id, userId, isLiked, title, text, username }) {
         }
       );
     } catch (err) {
-      if (err == "TOKEN_REFRESH_SUCCESS") {
-        //böyle olmamalı
-        saveLike();
-      }
       console.log("save like error ", err);
     }
   };

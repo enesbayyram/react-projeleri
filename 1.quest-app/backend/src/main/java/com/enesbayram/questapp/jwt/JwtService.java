@@ -21,7 +21,7 @@ public class JwtService {
 	@Value("${questapp.secret-key}")
 	private  String SECRET_KEY;
 	
-	private long expiredTime =60*1000*1;
+	private long expiredTime =60*1000*60;
 	
 	public <T> T exportToken(String token , Function<Claims, T> claimsFunction) {
 		final Claims claims = Jwts.parserBuilder().

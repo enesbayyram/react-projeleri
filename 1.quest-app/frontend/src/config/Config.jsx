@@ -54,12 +54,17 @@ axiosx.interceptors.response.use(
           if (rs.result) {
             localStorage.setItem("token", rs.data.token);
             localStorage.setItem("refreshToken", rs.data.refreshToken);
-            return Promise.reject("TOKEN_REFRESH_SUCCESS");
+
+            originalConfig.headers.Authorization = `Bearer ${rs.data.token}`;
+
+            //uzun süredir aradığım önceki istediği cagırma yapısı :)
+            axiosx
+              .request(originalConfig)
+              .then((res) => res)
+              .catch((err) => console.log("original request error", err));
           } else {
             logout();
           }
-          instance.defaults.headers.common["x-access-token"] =
-            "Bearer " + rs.data.token;
           return instance(originalConfig);
         } catch (error) {
           if (error.response && error.response.data) {
