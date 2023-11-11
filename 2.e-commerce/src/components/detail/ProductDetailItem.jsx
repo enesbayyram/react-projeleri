@@ -3,8 +3,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { addBasketCard } from "../../redux/cardSlice";
 
 function ProductDetailItem({ productDetail }) {
+  const dispatch = useDispatch();
+
   const [quantity, setQuantity] = useState(0);
 
   const increment = () => {
@@ -17,6 +21,18 @@ function ProductDetailItem({ productDetail }) {
     if (quantity > 0) {
       setQuantity(quantity - 1);
     }
+  };
+
+  const addBasket = () => {
+    let request = {
+      id: productDetail.id,
+      title: productDetail.title,
+      description: productDetail.description,
+      count: quantity,
+      price: productDetail.price,
+      image: productDetail.image,
+    };
+    dispatch(addBasketCard(request));
   };
   return (
     <Grid container spacing={2}>
@@ -75,6 +91,7 @@ function ProductDetailItem({ productDetail }) {
             </div>
           </div>
           <Button
+            onClick={addBasket}
             size="small"
             sx={{ marginTop: "10px" }}
             color="primary"

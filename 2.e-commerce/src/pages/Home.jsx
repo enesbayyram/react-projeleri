@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SliderComp from "../components/home/SliderComp";
 import Sorting from "../components/home/Sorting";
 import Category from "../components/home/Category";
@@ -8,6 +8,7 @@ import { useState } from "react";
 function Home() {
   const [sorting, setSorting] = useState("");
   const [category, setCategory] = useState("");
+
   return (
     <div>
       <SliderComp />
