@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { changeModalStatus } from "../redux/modalSlice";
-import { addNewProduct } from "../redux/productSlice";
+import { addNewProduct, updateProduct } from "../redux/productSlice";
 import TextField from "@mui/material/TextField";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -25,6 +26,18 @@ function ProductModal() {
   const { modal } = useSelector((store) => store.modal);
   const { products } = useSelector((store) => store.product);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let locationValue = location.search.split("=")[1];
+
+  useEffect(() => {
+    if (locationValue) {
+      //update etmek istiyor demektir
+      setProductInfo(products.find((product) => product.id == locationValue));
+    }
+  }, [locationValue]);
+
   const [productInfo, setProductInfo] = useState({
     name: "",
     price: "",
@@ -32,9 +45,15 @@ function ProductModal() {
   });
 
   const handleAddProduct = () => {
-    dispatch(addNewProduct(productInfo));
+    dispatch(addNewProduct({ ...productInfo, id: products.length + 1 }));
     dispatch(changeModalStatus());
     clearInputs();
+  };
+
+  const handleUpdateProduct = () => {
+    dispatch(updateProduct({ ...productInfo, id: locationValue }));
+    dispatch(changeModalStatus());
+    navigate("/");
   };
 
   const clearInputs = () => {
@@ -75,12 +94,13 @@ function ProductModal() {
             variant="h6"
             component="h2"
           >
-            Ürün Oluştur
+            {locationValue ? "Ürün Güncelle" : " Ürün Oluştur"}
           </Typography>
 
           <TextField
             id="name"
             name="name"
+            value={productInfo.name}
             onChange={(e) => onChangeFunc(e)}
             variant="outlined"
             fullWidth
@@ -92,6 +112,7 @@ function ProductModal() {
           <TextField
             id="price"
             name="price"
+            value={productInfo.price}
             onChange={(e) => onChangeFunc(e)}
             variant="outlined"
             fullWidth
@@ -108,13 +129,13 @@ function ProductModal() {
           />
 
           <Button
-            onClick={handleAddProduct}
+            onClick={locationValue ? handleUpdateProduct : handleAddProduct}
             sx={{ marginTop: "15px" }}
             fullWidth
             size="small"
             variant="contained"
           >
-            Ürün Ekle
+            {locationValue ? "Ürün Güncelle" : " Ürün Ekle"}
           </Button>
         </Box>
       </Modal>

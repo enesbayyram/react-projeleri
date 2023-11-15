@@ -4,13 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
 
 function Product() {
-  const dispatch = useDispatch();
-  const { products } = useSelector((store) => store.product);
+  const { products, keyword } = useSelector((store) => store.product);
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(keyword.toLowerCase())
+  );
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        flexWrap: "wrap",
+        margin: "20px 5px",
+      }}
+    >
       <ProductModal />
-      {products.map((product, index) => (
+      {filteredProducts.map((product, index) => (
         <ProductCard key={index} product={product} />
       ))}
     </div>

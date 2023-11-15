@@ -7,6 +7,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import Stack from "@mui/material/Stack";
 import { useDispatch } from "react-redux";
 import { changeModalStatus } from "../redux/modalSlice";
+import { filterProducts, sortingProducts } from "../redux/productSlice";
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ function Navbar() {
         sx={{ justifyContent: "center", alignItems: "center" }}
       >
         <Autocomplete
+          onChange={(e, option) => dispatch(sortingProducts(option.value))}
           size="small"
           options={options}
           sx={{
@@ -53,6 +55,7 @@ function Navbar() {
           }}
         >
           <TextField
+            onChange={(e) => dispatch(filterProducts(e.target.value))}
             id="searchField"
             label="Arama yapınız."
             variant="outlined"
