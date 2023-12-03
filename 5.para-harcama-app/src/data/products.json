@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "title": "Sakız",
+    "price": 0.5,
+    "image": "https://ideacdn.net/idea/fz/30/myassets/products/540/falim-5li-sakiz-isil-20-adet-1684.jpg?revision=1697143329"
+  },
+  {
+    "id": 2,
+    "title": "Ayakkabı",
+    "price": 20,
+    "image": "https://www.scooter.com.tr/lacivert-sneaker-ayakkabi-g5441tl-gunluk-ayakkabi-scooter-g5441-74868-15-O.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Araba",
+    "price": 500000,
+    "image": "https://cdn03.ciceksepeti.com/cicek/kc9037766-1/XL/burago-1-18-lamborghini-reventon-siyah-model-araba-kc9037766-1-1975365bcb9349f5a5296d5949abcf6a.jpg"
+  },
+
+  {
+    "id": 4,
+    "title": "Bisiklet",
+    "price": 3000,
+    "image": "https://cdn.akakce.com/z/sarissa-bisiklet/sarissa-spinne-20-jant-cocuk-i.jpg"
+  }
+]
