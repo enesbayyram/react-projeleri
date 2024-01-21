@@ -1,0 +1,18 @@
+.question-card {
+  width: 100%;
+  height: 100vh;
+  background-color: #fef069;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.answers-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 800px;
+}

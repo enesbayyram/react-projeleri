@@ -1,0 +1,16 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.modal > .content {
+  width: 350px;
+  height: 250px;
+  background-color: rgb(243, 243, 243);
+  border-radius: 10px;
+  font-size: 2rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
