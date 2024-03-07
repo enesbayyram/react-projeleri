@@ -27,6 +27,9 @@ public class SecurityConfig{
 	private final AuthenticationProvider authenticationProvider;
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	
+	private static final String AUTHENTICATE = "/authenticate";
+	private static final String REGISTER = "/register";
 
 	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "v2/api-docs", "/swagger-resources",
 			"swagger-resources", "/swagger-resources/**", "swagger-resources/**", "/configuration/ui",
@@ -41,7 +44,8 @@ public class SecurityConfig{
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 		.csrf(AbstractHttpConfigurer::disable)
-		.authorizeHttpRequests(request -> request.requestMatchers("/api/auth/**").permitAll()
+		.authorizeHttpRequests(request -> 
+		 request.requestMatchers(AUTHENTICATE, REGISTER).permitAll()
 		.requestMatchers(AUTH_WHITELIST).permitAll()
 		.anyRequest()
 		.authenticated())
