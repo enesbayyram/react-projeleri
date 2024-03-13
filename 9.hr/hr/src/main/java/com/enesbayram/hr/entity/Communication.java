@@ -1,6 +1,6 @@
 package com.enesbayram.hr.entity;
 
-import com.enesbayram.hr.enums.ContactSystemTypeEnum;
+import com.enesbayram.hr.enums.ContactSystemType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +24,7 @@ public class Communication extends BaseDbEntity{
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "contact_system_type")
-	private ContactSystemTypeEnum contactSystem;
+	private ContactSystemType contactSystem;
 	
 	@Column(name = "contact_value")
 	private String contactValue;

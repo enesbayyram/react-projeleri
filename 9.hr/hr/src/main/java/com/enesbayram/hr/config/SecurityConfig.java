@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.enesbayram.hr.handler.HRAuthenticationEntryPoint;
 import com.enesbayram.hr.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ public class SecurityConfig{
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	
+	private final HRAuthenticationEntryPoint authenticationEntryPoint;
+	
 	private static final String AUTHENTICATE = "/authenticate";
 	private static final String REGISTER = "/register";
 
@@ -40,6 +43,7 @@ public class SecurityConfig{
 	
 	
 	
+	@SuppressWarnings("removal")
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
@@ -49,6 +53,7 @@ public class SecurityConfig{
 		.requestMatchers(AUTH_WHITELIST).permitAll()
 		.anyRequest()
 		.authenticated())
+		.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).and()
 		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authenticationProvider(authenticationProvider)
 		.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

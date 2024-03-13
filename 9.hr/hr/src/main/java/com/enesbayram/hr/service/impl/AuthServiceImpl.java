@@ -9,6 +9,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.enesbayram.hr.entity.UserDef;
+import com.enesbayram.hr.exception.HRBaseException;
+import com.enesbayram.hr.exception.HRMessageFactory;
+import com.enesbayram.hr.exception.HRMessageType;
+import com.enesbayram.hr.exception.HrMessage;
 import com.enesbayram.hr.jwt.JwtService;
 import com.enesbayram.hr.model.DtoUserDef;
 import com.enesbayram.hr.model.DtoUserDefIU;
@@ -24,11 +28,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDef> implements IAuthService {
-	
+
 	private final AuthenticationManager authenticationManager;
-	
+
 	private final UserDefRepository userDefRepository;
-	
+
 	private final JwtService jwtService;
 
 	@Override
@@ -40,7 +44,7 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 	public DtoUserDef register(DtoUserDefIU dtoUserDefIU) {
 		Optional<UserDef> optional = dao.findByUsername(dtoUserDefIU.getUsername());
 		if (optional.isPresent()) {
-			// Hata fırlat
+			throw new HRBaseException(new HrMessage(HRMessageType.ALREADY_IS_EXIST_1003,HRMessageFactory.ofStatic(dtoUserDefIU.getUsername())));
 		}
 		UserDef userDef = toDTOForInsert(dtoUserDefIU, UserDef.class);
 		userDef.setPassword(new BCryptPasswordEncoder().encode(dtoUserDefIU.getPassword()));
@@ -52,20 +56,16 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 	@Override
 	public AuthResponse authenticate(AuthRequest authRequest) {
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword()));
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 		} catch (Exception e) {
-			// TODO: handle exception
-			log.error("Token alınamadı :" + e.getMessage());
-			throw e;
-			//TRY-catchleri düzelteceğim.
+			log.error("--- Token alinirken hata olustu ---> " + e.getMessage());
+			throw new HRBaseException(new HrMessage(HRMessageType.USERNAME_OR_PASSWORD_INCORRECT_1004, null));
 		}
-		
 		Optional<UserDef> userDefOpt = userDefRepository.findByUsername(authRequest.getUsername());
 		String token = jwtService.generateToken(userDefOpt.get());
-		
-		return AuthResponse.builder()
-				.token(token)
-				.build();
+
+		return AuthResponse.builder().token(token).build();
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.enesbayram.hr.enums;
 
 
-public enum MenuTypeEnum {
+public enum MenuType {
 
 	MENU,
 	FOLDER

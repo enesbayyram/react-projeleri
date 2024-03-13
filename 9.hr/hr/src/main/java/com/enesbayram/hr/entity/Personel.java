@@ -2,7 +2,7 @@ package com.enesbayram.hr.entity;
 
 import java.util.Date;
 
-import com.enesbayram.hr.enums.GenderTypeEnum;
+import com.enesbayram.hr.enums.GenderType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,7 +49,7 @@ public class Personel extends BaseDbEntity{
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "gender")
-	private GenderTypeEnum gender;
+	private GenderType gender;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")

@@ -1,7 +1,7 @@
 package com.enesbayram.hr.enums;
 
 
-public enum PermissionTypeEnum {
+public enum PermissionType {
 	YILLIK,
 	DOGUM,
 	ASKERLIK,

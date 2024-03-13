@@ -2,7 +2,6 @@ package com.enesbayram.hr.jwt;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,16 +14,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private JwtService jwtService;
+	private final JwtService jwtService;
 
-	@Autowired
-	private UserDetailsService userDetailsService;
-
+	private final UserDetailsService userDetailsService;
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -52,9 +51,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				}
 			}
 		} catch (ExpiredJwtException ex) {
-			System.out.println("ex " + ex.getMessage());
+			logger.error("Token expired olmustur : " + ex.getMessage());
 		} catch (Exception e) {
-			throw e;
+			logger.error("Token alinirken hata olusmustur : " + e.getMessage());
 		}
 		filterChain.doFilter(request, response);
 	}

@@ -12,6 +12,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.enesbayram.hr.entity.BaseDbEntity;
+import com.enesbayram.hr.exception.HRBaseException;
+import com.enesbayram.hr.exception.HRMessageFactory;
+import com.enesbayram.hr.exception.HRMessageType;
+import com.enesbayram.hr.exception.HrMessage;
 import com.enesbayram.hr.model.base.DtoBaseModel;
 import com.enesbayram.hr.model.base.DtoCrudModel;
 import com.enesbayram.hr.repository.BaseDaoRepository;
@@ -38,11 +42,11 @@ public abstract class BaseDbServiceImpl<R extends BaseDaoRepository<T>, T extend
 	@SuppressWarnings("unchecked")
 	@Override
 	public T save(T t) {
-		BaseDbEntity baseDb = (BaseDbEntity)t;
+		BaseDbEntity baseDb = (BaseDbEntity) t;
 		baseDb.setCreateTime(new Date());
 		baseDb.setCreateUser("xxxx");
-		
-		t = (T)baseDb;
+
+		t = (T) baseDb;
 		T entity = dao.save(t);
 		return entity;
 	}
@@ -78,7 +82,8 @@ public abstract class BaseDbServiceImpl<R extends BaseDaoRepository<T>, T extend
 			dtoClass = (D) clazz.getDeclaredConstructor().newInstance();
 			BeanUtils.copyProperties(dbEntity, dtoClass);
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw new HRBaseException(
+					new HrMessage(HRMessageType.UNEXPECTED_ERROR_9999, HRMessageFactory.ofStatic(e.getMessage())));
 		}
 		return dtoClass;
 	}
@@ -104,7 +109,8 @@ public abstract class BaseDbServiceImpl<R extends BaseDaoRepository<T>, T extend
 			dbEntity = clazz.getDeclaredConstructor().newInstance();
 			BeanUtils.copyProperties(dtoEntity, dbEntity);
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw new HRBaseException(
+					new HrMessage(HRMessageType.UNEXPECTED_ERROR_9999, HRMessageFactory.ofStatic(e.getMessage())));
 		}
 		return dbEntity;
 	}

@@ -1,6 +1,6 @@
 package com.enesbayram.hr.entity;
 
-import com.enesbayram.hr.enums.MenuTypeEnum;
+import com.enesbayram.hr.enums.MenuType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +33,7 @@ public class Menu extends BaseDbEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "menu_type")
-	private MenuTypeEnum menuType;
+	private MenuType menuType;
 
 	@Column(name = "is_active")
 	private Boolean isActive;

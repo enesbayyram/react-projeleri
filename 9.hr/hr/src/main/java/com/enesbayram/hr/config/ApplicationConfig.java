@@ -9,7 +9,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.enesbayram.hr.exception.UserNotFoundException;
+import com.enesbayram.hr.exception.HRBaseException;
+import com.enesbayram.hr.exception.HRMessageFactory;
+import com.enesbayram.hr.exception.HRMessageType;
+import com.enesbayram.hr.exception.HrMessage;
 import com.enesbayram.hr.repository.UserDefRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +26,7 @@ public class ApplicationConfig {
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return username ->userDefRepository.findByUsername(username)
-				.orElseThrow(()-> new UserNotFoundException(username + " adlı user bulunamadı !"));
+				.orElseThrow(()-> new HRBaseException(new HrMessage(HRMessageType.NO_RECORD_IS_FOUND_1002, HRMessageFactory.ofStatic(username))));
 	}
 	
 	@Bean

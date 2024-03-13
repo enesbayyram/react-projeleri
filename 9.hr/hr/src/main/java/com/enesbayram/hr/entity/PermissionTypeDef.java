@@ -1,6 +1,6 @@
 package com.enesbayram.hr.entity;
 
-import com.enesbayram.hr.enums.PermissionTypeEnum;
+import com.enesbayram.hr.enums.PermissionType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +24,7 @@ public class PermissionTypeDef extends BaseDbEntity{
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "short_code" , nullable = false)
-	private PermissionTypeEnum shortCode;
+	private PermissionType shortCode;
 	
 	@Column(name = "description")
 	private String desription;
