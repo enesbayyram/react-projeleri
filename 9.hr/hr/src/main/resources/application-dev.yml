@@ -1,0 +1,8 @@
+hr:
+  api:
+    permit-all:
+      register:
+        description: 'Sisteme kullanıcı tanımlamak için kullanılır.'
+      authenticate:
+        description: 'Sisteme giriş yapıp token almak için kullanılır.'
+    
