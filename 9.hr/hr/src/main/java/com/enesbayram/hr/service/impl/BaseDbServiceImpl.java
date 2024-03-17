@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.enesbayram.hr.dto.base.DtoBaseModel;
+import com.enesbayram.hr.dto.base.DtoCrudModel;
 import com.enesbayram.hr.entity.BaseDbEntity;
 import com.enesbayram.hr.exception.HRBaseException;
 import com.enesbayram.hr.exception.HRMessageFactory;
 import com.enesbayram.hr.exception.HRMessageType;
 import com.enesbayram.hr.exception.HrMessage;
-import com.enesbayram.hr.model.base.DtoBaseModel;
-import com.enesbayram.hr.model.base.DtoCrudModel;
 import com.enesbayram.hr.repository.BaseDaoRepository;
 import com.enesbayram.hr.service.BaseDbService;
 

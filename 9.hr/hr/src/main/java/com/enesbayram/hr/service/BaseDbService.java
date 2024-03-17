@@ -3,9 +3,9 @@ package com.enesbayram.hr.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.enesbayram.hr.dto.base.DtoBaseModel;
+import com.enesbayram.hr.dto.base.DtoCrudModel;
 import com.enesbayram.hr.entity.BaseDbEntity;
-import com.enesbayram.hr.model.base.DtoBaseModel;
-import com.enesbayram.hr.model.base.DtoCrudModel;
 
 public interface BaseDbService<T extends BaseDbEntity> {
 

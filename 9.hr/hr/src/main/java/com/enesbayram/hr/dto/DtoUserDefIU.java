@@ -1,6 +1,6 @@
-package com.enesbayram.hr.model;
+package com.enesbayram.hr.dto;
 
-import com.enesbayram.hr.model.base.DtoCrudModel;
+import com.enesbayram.hr.dto.base.DtoCrudModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

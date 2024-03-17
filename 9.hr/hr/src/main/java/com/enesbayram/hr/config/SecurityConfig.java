@@ -33,6 +33,7 @@ public class SecurityConfig{
 	
 	private static final String AUTHENTICATE = "/authenticate";
 	private static final String REGISTER = "/register";
+	private static final String REFREFH_TOKEN = "/refreshToken";
 
 	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "v2/api-docs", "/swagger-resources",
 			"swagger-resources", "/swagger-resources/**", "swagger-resources/**", "/configuration/ui",
@@ -49,7 +50,7 @@ public class SecurityConfig{
 		http
 		.csrf(AbstractHttpConfigurer::disable)
 		.authorizeHttpRequests(request -> 
-		 request.requestMatchers(AUTHENTICATE, REGISTER).permitAll()
+		 request.requestMatchers(AUTHENTICATE, REGISTER , REFREFH_TOKEN).permitAll()
 		.requestMatchers(AUTH_WHITELIST).permitAll()
 		.anyRequest()
 		.authenticated())

@@ -1,25 +1,34 @@
 package com.enesbayram.hr.service.impl;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.enesbayram.hr.dto.DtoUserDef;
+import com.enesbayram.hr.dto.DtoUserDefIU;
+import com.enesbayram.hr.entity.RefreshToken;
 import com.enesbayram.hr.entity.UserDef;
 import com.enesbayram.hr.exception.HRBaseException;
 import com.enesbayram.hr.exception.HRMessageFactory;
 import com.enesbayram.hr.exception.HRMessageType;
 import com.enesbayram.hr.exception.HrMessage;
 import com.enesbayram.hr.jwt.JwtService;
-import com.enesbayram.hr.model.DtoUserDef;
-import com.enesbayram.hr.model.DtoUserDefIU;
 import com.enesbayram.hr.model.api.AuthRequest;
 import com.enesbayram.hr.model.api.AuthResponse;
+import com.enesbayram.hr.model.api.RefreshTokenRequest;
 import com.enesbayram.hr.repository.UserDefRepository;
 import com.enesbayram.hr.service.IAuthService;
+import com.enesbayram.hr.service.IRefreshTokenService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,16 +44,31 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 
 	private final JwtService jwtService;
 
+	private final IRefreshTokenService refreshTokenService;
+	
+	@Value("${refresh-token.expiredIn}")
+	private long refreshTokenExpiredIn;
+
 	@Override
 	public Class<?> getDTOClassForService() {
 		return DtoUserDef.class;
+	}
+
+	private RefreshToken createRefreshTokenModel(UserDef userDef) {
+		RefreshToken refreshToken = new RefreshToken();
+		refreshToken.setRefreshToken(UUID.randomUUID().toString());
+		refreshToken.setExpireDate(Date.from(Instant.now().plusMillis(refreshTokenExpiredIn)));
+		refreshToken.setUserDef(userDef);
+
+		return refreshToken;
 	}
 
 	@Override
 	public DtoUserDef register(DtoUserDefIU dtoUserDefIU) {
 		Optional<UserDef> optional = dao.findByUsername(dtoUserDefIU.getUsername());
 		if (optional.isPresent()) {
-			throw new HRBaseException(new HrMessage(HRMessageType.ALREADY_IS_EXIST_1003,HRMessageFactory.ofStatic(dtoUserDefIU.getUsername())));
+			throw new HRBaseException(new HrMessage(HRMessageType.ALREADY_IS_EXIST_1003,
+					HRMessageFactory.ofStatic(dtoUserDefIU.getUsername())));
 		}
 		UserDef userDef = toDTOForInsert(dtoUserDefIU, UserDef.class);
 		userDef.setPassword(new BCryptPasswordEncoder().encode(dtoUserDefIU.getPassword()));
@@ -63,9 +87,31 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 			throw new HRBaseException(new HrMessage(HRMessageType.USERNAME_OR_PASSWORD_INCORRECT_1004, null));
 		}
 		Optional<UserDef> userDefOpt = userDefRepository.findByUsername(authRequest.getUsername());
+		RefreshToken savedRefreshToken = refreshTokenService
+				.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
+
 		String token = jwtService.generateToken(userDefOpt.get());
 
-		return AuthResponse.builder().token(token).build();
+		return AuthResponse.builder().token(token).refreshToken(savedRefreshToken.getRefreshToken()).build();
+	}
+
+	@Transactional(propagation = Propagation.NEVER)
+	@Override
+	public AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+		RefreshToken refreshToken = refreshTokenService.findByRefreshToken(refreshTokenRequest.getRefreshToken());
+		if (refreshToken == null) {
+			throw new HRBaseException(new HrMessage(HRMessageType.REFRESH_TOKEN_INVALID_1006,
+					HRMessageFactory.ofStatic(refreshTokenRequest.getRefreshToken())));
+		}
+		boolean refreshTokenIsValid = refreshTokenService.isRefreshTokenValid(refreshToken);
+		if (!refreshTokenIsValid) {
+			refreshTokenService.deleteRefreshToken(refreshToken);
+			throw new HRBaseException(new HrMessage(HRMessageType.REFRESH_TOKEN_EXPIRED_1007,
+					HRMessageFactory.ofStatic(refreshTokenRequest.getRefreshToken())));
+		}
+		String token = jwtService.generateToken(refreshToken.getUserDef());
+		return AuthResponse.builder().token(token).refreshToken(refreshToken.getRefreshToken()).build();
+
 	}
 
 }

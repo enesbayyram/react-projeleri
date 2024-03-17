@@ -21,7 +21,8 @@ public class JwtService {
 	@Value("${hr.secret-key}")
 	private  String SECRET_KEY;
 	
-	private long expiredTime =60*1000*60;
+	@Value("${token.expiredIn}")
+	private long expiredTime;
 	
 	public <T> T exportToken(String token , Function<Claims, T> claimsFunction) {
 		final Claims claims = Jwts.parserBuilder().

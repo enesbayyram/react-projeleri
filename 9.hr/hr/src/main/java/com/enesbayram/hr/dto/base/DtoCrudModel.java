@@ -1,4 +1,4 @@
-package com.enesbayram.hr.model.base;
+package com.enesbayram.hr.dto.base;
 
 import lombok.Getter;
 import lombok.Setter;

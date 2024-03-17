@@ -10,6 +10,8 @@ public enum HRMessageType {
 	ALREADY_IS_EXIST_1003("1003" , "kayıt sistemde bulunmaktadır"),
 	USERNAME_OR_PASSWORD_INCORRECT_1004("1004" , "kullanıcı adı veya şifre hatalı."),
 	TOKEN_EXPIRED_1005("1005" , "Tokenın süresi dolmuştur."),
+	REFRESH_TOKEN_INVALID_1006("1006" , "Refresh token geçersizdir"),
+	REFRESH_TOKEN_EXPIRED_1007("1007" ,"Refresh token süresi bitmiştir"),
 	
 	
 	UNEXPECTED_ERROR_9999("9999" , "Beklenmeyen bir hata oluştu");

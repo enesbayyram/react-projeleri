@@ -5,4 +5,5 @@ hr:
         description: 'Sisteme kullanıcı tanımlamak için kullanılır.'
       authenticate:
         description: 'Sisteme giriş yapıp token almak için kullanılır.'
-    
+      refresh-token:
+        description: 'Mevcut token bittiğinde yenilemek için kullanılır.'

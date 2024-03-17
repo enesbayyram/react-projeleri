@@ -1,6 +1,6 @@
-package com.enesbayram.hr.model;
+package com.enesbayram.hr.dto;
 
-import com.enesbayram.hr.model.base.DtoEntityModel;
+import com.enesbayram.hr.dto.base.DtoEntityModel;
 
 import lombok.Getter;
 import lombok.Setter;
