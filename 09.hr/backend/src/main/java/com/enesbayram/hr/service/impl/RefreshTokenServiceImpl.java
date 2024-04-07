@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.enesbayram.hr.entity.RefreshToken;
+import com.enesbayram.hr.entity.UserDef;
 import com.enesbayram.hr.repository.RefreshTokenRepository;
 import com.enesbayram.hr.service.IRefreshTokenService;
 
@@ -48,6 +49,15 @@ public class RefreshTokenServiceImpl extends BaseDbServiceImpl<RefreshTokenRepos
 	@Override
 	public void deleteRefreshToken(RefreshToken refreshToken) {
 		delete(refreshToken);
+	}
+
+	@Override
+	public RefreshToken findRefreshTokenByUserDef(UserDef userDef) {
+		Optional<RefreshToken> optional = dao.findRefreshTokenByUserDef(userDef);
+		if (optional.isPresent()) {
+			return optional.get();
+		}
+		return null;
 	}
 
 }

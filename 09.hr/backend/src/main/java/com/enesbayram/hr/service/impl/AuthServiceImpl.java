@@ -45,7 +45,7 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 	private final JwtService jwtService;
 
 	private final IRefreshTokenService refreshTokenService;
-	
+
 	@Value("${refresh-token.expiredIn}")
 	private long refreshTokenExpiredIn;
 
@@ -77,8 +77,20 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 		return toDTO(savedUserDef);
 	}
 
+	private RefreshToken isThereActiveRefreshToken(UserDef userDef) {
+		RefreshToken refreshToken = refreshTokenService.findRefreshTokenByUserDef(userDef);
+		if (refreshToken != null) {
+			boolean refreshTokenValid = refreshTokenService.isRefreshTokenValid(refreshToken);
+			if (refreshTokenValid) {
+				return refreshToken;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public AuthResponse authenticate(AuthRequest authRequest) {
+		AuthResponse response = new AuthResponse();
 		try {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -87,12 +99,19 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 			throw new HRBaseException(new HrMessage(HRMessageType.USERNAME_OR_PASSWORD_INCORRECT_1004, null));
 		}
 		Optional<UserDef> userDefOpt = userDefRepository.findByUsername(authRequest.getUsername());
-		RefreshToken savedRefreshToken = refreshTokenService
-				.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
-
 		String token = jwtService.generateToken(userDefOpt.get());
 
-		return AuthResponse.builder().token(token).refreshToken(savedRefreshToken.getRefreshToken()).build();
+		response.setToken(token);
+
+		RefreshToken refreshToken = isThereActiveRefreshToken(userDefOpt.get());
+		if (refreshToken != null) {
+			response.setRefreshToken(refreshToken.getRefreshToken());
+		} else {
+			RefreshToken newRefreshToken = refreshTokenService
+					.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
+			response.setRefreshToken(newRefreshToken.getRefreshToken());
+		}
+		return response;
 	}
 
 	@Transactional(propagation = Propagation.NEVER)
