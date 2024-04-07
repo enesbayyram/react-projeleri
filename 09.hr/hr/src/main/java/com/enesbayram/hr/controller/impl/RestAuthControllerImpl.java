@@ -35,6 +35,7 @@ public class RestAuthControllerImpl extends RestBaseController implements IRestA
 	public HrRootEntity<AuthResponse> authenticate(@RequestBody AuthRequest authRequest) {
 		return ok(authService.authenticate(authRequest));
 	}
+	
 
 	@Operation(summary = "${hr.api.permit-all.refresh-token.description}")
 	@PostMapping("/refreshToken")
