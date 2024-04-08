@@ -38,6 +38,7 @@ public class UserDef extends BaseDbEntity implements UserDetails{
 
 	@Column(name = "is_active", nullable = true)
 	private Boolean isActive;
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

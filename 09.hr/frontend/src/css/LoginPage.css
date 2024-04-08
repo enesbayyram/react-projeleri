@@ -1,0 +1,45 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../assets/hr.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login-page {
+  padding: 50px;
+  background-color: hsl(0, 0%, 100%);
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px black;
+  margin-top: -150px;
+}
+
+.button-div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 480px) {
+  .login-button {
+    width: 100%;
+  }
+
+  .register-button {
+    width: 100%;
+    margin-top: 5px !important;
+  }
+  .button-div {
+    display: flex;
+    flex-direction: column;
+  }
+}

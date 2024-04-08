@@ -35,10 +35,11 @@ public class RefreshTokenServiceImpl extends BaseDbServiceImpl<RefreshTokenRepos
 
 	@Override
 	public boolean isRefreshTokenValid(RefreshToken refreshToken) {
-		if (refreshToken.getExpireDate().before(new Date())) {
-			return false;
+		// 15.44      16.00
+		if (refreshToken.getExpireDate().after(new Date())) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

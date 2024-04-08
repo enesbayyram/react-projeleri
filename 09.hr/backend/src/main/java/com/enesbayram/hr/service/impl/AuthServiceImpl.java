@@ -77,17 +77,8 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 		return toDTO(savedUserDef);
 	}
 
-	private RefreshToken isThereActiveRefreshToken(UserDef userDef) {
-		RefreshToken refreshToken = refreshTokenService.findRefreshTokenByUserDef(userDef);
-		if (refreshToken != null) {
-			boolean refreshTokenValid = refreshTokenService.isRefreshTokenValid(refreshToken);
-			if (refreshTokenValid) {
-				return refreshToken;
-			}
-		}
-		return null;
-	}
 
+	@Transactional(propagation = Propagation.NEVER)
 	@Override
 	public AuthResponse authenticate(AuthRequest authRequest) {
 		AuthResponse response = new AuthResponse();
@@ -102,14 +93,21 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 		String token = jwtService.generateToken(userDefOpt.get());
 
 		response.setToken(token);
-
-		RefreshToken refreshToken = isThereActiveRefreshToken(userDefOpt.get());
-		if (refreshToken != null) {
-			response.setRefreshToken(refreshToken.getRefreshToken());
-		} else {
-			RefreshToken newRefreshToken = refreshTokenService
-					.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
+		
+		
+		RefreshToken refreshToken = refreshTokenService.findRefreshTokenByUserDef(userDefOpt.get());
+		if(refreshToken==null) {
+			RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
 			response.setRefreshToken(newRefreshToken.getRefreshToken());
+		}else {
+			boolean isRefreshTokenValid = refreshTokenService.isRefreshTokenValid(refreshToken);
+			if(isRefreshTokenValid) {
+				response.setRefreshToken(refreshToken.getRefreshToken());
+			}else {
+				refreshTokenService.deleteRefreshToken(refreshToken);
+				RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
+				response.setRefreshToken(newRefreshToken.getRefreshToken());
+			}
 		}
 		return response;
 	}
