@@ -9,6 +9,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import loginService from "../services/LoginService";
 import storageService from "../services/StorageService";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import toastService from "../services/ToastService";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -17,7 +19,10 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const login = () => {
-    if (!username || !password) alert("Tüm alanları doldurunuz");
+    if (!username || !password) {
+      toastService.warn("Tüm alanları doldurunuz");
+      return;
+    }
     loginService
       .login({ username, password })
       .then((response) => {
@@ -27,7 +32,7 @@ function LoginPage() {
           navigate("/");
         }
       })
-      .catch((err) => alert(err));
+      .catch((err) => console.log("err ", err));
   };
 
   return (
@@ -53,6 +58,7 @@ function LoginPage() {
         <div>
           <TextField
             value={password}
+            type="password"
             onChange={(e) => setPassword(e.target.value)}
             className="input-password"
             size="small"

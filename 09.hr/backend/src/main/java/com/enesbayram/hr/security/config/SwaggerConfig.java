@@ -1,4 +1,4 @@
-package com.enesbayram.hr.config;
+package com.enesbayram.hr.security.config;
 
 import org.springframework.context.annotation.Configuration;
 

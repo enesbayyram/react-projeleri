@@ -9,11 +9,19 @@ class StorageService {
   };
 
   getToken = () => {
-    localStorage.getItem(TOKEN);
+    return localStorage.getItem(TOKEN);
   };
 
   getRefreshToken = () => {
-    localStorage.getItem(REFRESH_TOKEN);
+    return localStorage.getItem(REFRESH_TOKEN);
+  };
+
+  removeToken = () => {
+    localStorage.removeItem(TOKEN);
+  };
+
+  removeRefreshToken = () => {
+    localStorage.removeItem(REFRESH_TOKEN);
   };
 }
 

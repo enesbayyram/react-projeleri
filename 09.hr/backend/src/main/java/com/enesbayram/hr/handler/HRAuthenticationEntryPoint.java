@@ -21,7 +21,7 @@ public class HRAuthenticationEntryPoint implements AuthenticationEntryPoint{
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 //		handlerExceptionResolver.resolveException(request, response, null, new HRBaseException(new HrMessage(HRMessageType.TOKEN_EXPIRED_1005, null)));
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED , authException.getMessage());
 	}
 
 }

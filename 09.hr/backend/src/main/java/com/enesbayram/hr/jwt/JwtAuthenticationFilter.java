@@ -9,6 +9,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.enesbayram.hr.entity.UserDef;
+import com.enesbayram.hr.security.session.ISessionInstanceService;
+import com.enesbayram.hr.service.IUserDefService;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,6 +27,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtService jwtService;
 
 	private final UserDetailsService userDetailsService;
+	
+	private final ISessionInstanceService sessionInstanceService;
+	
+	private final IUserDefService userDefService;
+	
+	public void fillUserInformation(String username) {
+		UserDef userDef = userDefService.findByUsername(username);
+		sessionInstanceService.setUserInformation(userDef);
+	}
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -47,6 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 								null, userDetails.getAuthorities());
 						auth.setDetails(userDetails);
 						SecurityContextHolder.getContext().setAuthentication(auth);
+						fillUserInformation(username);
+						
 					}
 				}
 			}

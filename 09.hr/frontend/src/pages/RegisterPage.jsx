@@ -8,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import loginService from "../services/LoginService";
 import { useNavigate } from "react-router-dom";
 import { IoIosPersonAdd } from "react-icons/io";
+import toastService from "../services/ToastService";
 
 function RegisterPage() {
   const [firstname, setFirstName] = useState("");
@@ -22,9 +23,21 @@ function RegisterPage() {
     setLastname("");
     setUsername("");
     setPassword("");
+    toastService.success("Temizlendi");
+  };
+
+  const checkFields = () => {
+    if (firstname && lastname && username && password) {
+      return true;
+    }
+    return false;
   };
 
   const register = () => {
+    if (!checkFields()) {
+      toastService.warn("Tüm alanları doldurunuz");
+      return;
+    }
     const payload = {
       firstname,
       lastname,
@@ -35,10 +48,11 @@ function RegisterPage() {
       .register(payload)
       .then((response) => {
         if (response?.result) {
+          toastService.success(username + " kullanıcısı kaydedildi.");
           navigate("/login");
         }
       })
-      .catch((err) => alert(err));
+      .catch((err) => console.log("err ", err));
   };
 
   return (

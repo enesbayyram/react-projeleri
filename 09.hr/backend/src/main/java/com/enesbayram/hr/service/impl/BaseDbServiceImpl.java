@@ -19,6 +19,7 @@ import com.enesbayram.hr.exception.HRMessageFactory;
 import com.enesbayram.hr.exception.HRMessageType;
 import com.enesbayram.hr.exception.HrMessage;
 import com.enesbayram.hr.repository.BaseDaoRepository;
+import com.enesbayram.hr.security.session.ISessionInstanceService;
 import com.enesbayram.hr.service.BaseDbService;
 
 import jakarta.persistence.EntityManager;
@@ -33,6 +34,9 @@ public abstract class BaseDbServiceImpl<R extends BaseDaoRepository<T>, T extend
 
 	@Autowired
 	protected R dao;
+	
+	@Autowired
+	private ISessionInstanceService sessionInstanceService;
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -44,7 +48,7 @@ public abstract class BaseDbServiceImpl<R extends BaseDaoRepository<T>, T extend
 	public T save(T t) {
 		BaseDbEntity baseDb = (BaseDbEntity) t;
 		baseDb.setCreateTime(new Date());
-		baseDb.setCreateUser("xxxx");
+		baseDb.setCreateUser(sessionInstanceService.getUsername());
 
 		t = (T) baseDb;
 		T entity = dao.save(t);
@@ -53,6 +57,9 @@ public abstract class BaseDbServiceImpl<R extends BaseDaoRepository<T>, T extend
 
 	@Override
 	public T update(T t) {
+		BaseDbEntity baseDb = (BaseDbEntity)t;
+		baseDb.setUpdateTime(new Date());
+		baseDb.setUpdateUser(sessionInstanceService.getUsername());
 		T entity = entityManager.merge(t);
 		return entity;
 	}

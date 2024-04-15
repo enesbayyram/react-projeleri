@@ -1,4 +1,4 @@
-package com.enesbayram.hr.config;
+package com.enesbayram.hr.security.config;
 
 import java.util.Arrays;
 
@@ -32,7 +32,7 @@ public class SecurityConfig{
 	private final HRAuthenticationEntryPoint authenticationEntryPoint;
 	
 	private static final String AUTHENTICATE = "/authenticate";
-	private static final String REGISTER = "/register";
+//	private static final String REGISTER = "/register";
 	private static final String REFREFH_TOKEN = "/refreshToken";
 
 	private static final String[] AUTH_WHITELIST = { "/v2/api-docs", "v2/api-docs", "/swagger-resources",
@@ -50,7 +50,7 @@ public class SecurityConfig{
 		http
 		.csrf(AbstractHttpConfigurer::disable)
 		.authorizeHttpRequests(request -> 
-		 request.requestMatchers(AUTHENTICATE, REGISTER , REFREFH_TOKEN).permitAll()
+		 request.requestMatchers(AUTHENTICATE, REFREFH_TOKEN).permitAll()
 		.requestMatchers(AUTH_WHITELIST).permitAll()
 		.anyRequest()
 		.authenticated())
