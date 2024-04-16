@@ -17,7 +17,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "role_authorization")
-@NamedEntityGraph(name = "role_authorization_graph_details", attributeNodes = { @NamedAttributeNode(value = "roleDef"),
+@NamedEntityGraph(name = "role_authorization_graph_details", attributeNodes = { 
+		@NamedAttributeNode(value = "roleDef"),
 		@NamedAttributeNode(value = "authorizationDef")})
 public class RoleAuthorization extends BaseDbEntity {
 

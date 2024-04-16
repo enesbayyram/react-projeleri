@@ -101,7 +101,7 @@ public abstract class BaseDbServiceImpl<R extends BaseDaoRepository<T>, T extend
 	}
 
 	@Override
-	public <D extends DtoBaseModel> List<D> toDTOList(List<T> list, Class<?> clazz) {
+	public <D extends DtoBaseModel> List<D> toDTOList(List<T> list) {
 		List<D> dtoList = new ArrayList<>();
 		for (T t : list) {
 			dtoList.add(toDTO(t));

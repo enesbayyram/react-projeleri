@@ -7,3 +7,7 @@ hr:
         description: 'Sisteme giriş yapıp token almak için kullanılır.'
       refresh-token:
         description: 'Mevcut token bittiğinde yenilemek için kullanılır.'
+      get-authorizations-by-role-id:
+        description: 'Role id sine göre kişinin yetkisinin olduğu aksiyonları getirir.'
+      get-menulist-by-rolecode:
+        description: 'Role koduna göre erişebileceği menülerin getirilmesi'

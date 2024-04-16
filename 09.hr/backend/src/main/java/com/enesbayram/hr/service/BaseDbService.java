@@ -24,7 +24,7 @@ public interface BaseDbService<T extends BaseDbEntity> {
 	
 	<D extends DtoBaseModel> D toDTO(T dbEntity);
 //
-	<D extends DtoBaseModel> List<D> toDTOList(List<T> list, Class<?> clazz);
+	<D extends DtoBaseModel> List<D> toDTOList(List<T> list);
 //	
 	<D extends DtoCrudModel> T toDTOForInsert(D dtoEntity , Class<T> clazz);
 }

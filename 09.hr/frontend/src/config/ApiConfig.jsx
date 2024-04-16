@@ -2,13 +2,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import storageService from "../services/StorageService";
 import toastService from "../services/ToastService";
+import { TOKEN } from "../contants/StorageConstant";
 
 const BASE_URL = "http://localhost:8080/hr/api/";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: storageService.getToken(),
+    Authorization: `Bearer ${storageService.getToken()}`,
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
   },
@@ -38,6 +39,7 @@ axiosInstance.interceptors.response.use(
   },
 
   async (err) => {
+    debugger;
     const originalConfig = err.config;
     if (err.response) {
       if (err.response.status == 401 && !originalConfig._retry) {

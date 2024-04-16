@@ -22,7 +22,7 @@ public class Menu extends BaseDbEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "icon", nullable = false)
+	@Column(name = "icon", nullable = true)
 	private String icon;
 
 	@Column(name = "menu_link", nullable = false)

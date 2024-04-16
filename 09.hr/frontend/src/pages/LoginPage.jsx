@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Stack from "@mui/material/Stack";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "../css/LoginPage.css";
@@ -9,8 +8,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import loginService from "../services/LoginService";
 import storageService from "../services/StorageService";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import toastService from "../services/ToastService";
+import menuService from "../services/MenuService";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -27,9 +26,18 @@ function LoginPage() {
       .login({ username, password })
       .then((response) => {
         if (response?.data?.result) {
-          storageService.writeToken(response?.data?.data?.token);
+          const token = response?.data?.data?.token;
+          storageService.writeToken(token);
           storageService.writeRefreshToken(response?.data?.data?.refreshToken);
-          navigate("/");
+
+          const role = storageService.getRole();
+
+          menuService
+            .getMenuListByRoleCode(role)
+            .then((response) => console.log(response.data?.data))
+            .catch((err) => console.log(err));
+
+          // navigate("/");
         }
       })
       .catch((err) => console.log("err ", err));
