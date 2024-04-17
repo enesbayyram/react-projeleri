@@ -45,11 +45,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String token;
 		String username;
 
-		if (header == null) {
+		if (header == null || header.substring(7).length()<15) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		token = header.substring(7);
+		
+		
 		try {
 			username = jwtService.extractUsernameFromToken(token);
 			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

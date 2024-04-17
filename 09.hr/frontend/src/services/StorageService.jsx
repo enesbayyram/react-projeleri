@@ -3,11 +3,15 @@ import { jwtDecode } from "jwt-decode";
 
 class StorageService {
   writeToken = (token) => {
-    localStorage.setItem(TOKEN, token);
+    if (token) {
+      localStorage.setItem(TOKEN, token);
+    }
   };
 
   writeRefreshToken = (refreshToken) => {
-    localStorage.setItem(REFRESH_TOKEN, refreshToken);
+    if (refreshToken) {
+      localStorage.setItem(REFRESH_TOKEN, refreshToken);
+    }
   };
 
   getToken = () => {
@@ -19,7 +23,10 @@ class StorageService {
   };
 
   getRole = () => {
-    return jwtDecode(localStorage.getItem(TOKEN)).roles[0];
+    if (localStorage.getItem(TOKEN)) {
+      return jwtDecode(localStorage.getItem(TOKEN)).roles[0];
+    }
+    return "";
   };
 
   removeToken = () => {

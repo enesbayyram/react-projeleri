@@ -9,6 +9,8 @@ import loginService from "../services/LoginService";
 import { useNavigate } from "react-router-dom";
 import { IoIosPersonAdd } from "react-icons/io";
 import toastService from "../services/ToastService";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../redux/slices/appSlice";
 
 function RegisterPage() {
   const [firstname, setFirstName] = useState("");
@@ -16,6 +18,7 @@ function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const clear = () => {
@@ -44,6 +47,7 @@ function RegisterPage() {
       username,
       password,
     };
+    dispatch(setLoading(true));
     loginService
       .register(payload)
       .then((response) => {
@@ -52,7 +56,10 @@ function RegisterPage() {
           navigate("/login");
         }
       })
-      .catch((err) => console.log("err ", err));
+      .catch((err) => console.log("err ", err))
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
   };
 
   return (

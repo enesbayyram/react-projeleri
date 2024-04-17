@@ -10,11 +10,15 @@ import storageService from "../services/StorageService";
 import { useNavigate } from "react-router-dom";
 import toastService from "../services/ToastService";
 import menuService from "../services/MenuService";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsAuthenticate, setLoading } from "../redux/slices/appSlice";
+import { setMenu } from "../redux/slices/menuSlice";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const login = () => {
@@ -22,6 +26,7 @@ function LoginPage() {
       toastService.warn("Tüm alanları doldurunuz");
       return;
     }
+    dispatch(setLoading(true));
     loginService
       .login({ username, password })
       .then((response) => {
@@ -34,13 +39,21 @@ function LoginPage() {
 
           menuService
             .getMenuListByRoleCode(role)
-            .then((response) => console.log(response.data?.data))
-            .catch((err) => console.log(err));
+            .then((response) => {
+              dispatch(setMenu(response.data?.data));
 
-          // navigate("/");
+              dispatch(setIsAuthenticate(true));
+              navigate("/");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       })
-      .catch((err) => console.log("err ", err));
+      .catch((err) => {
+        console.log("err ", err);
+      })
+      .finally(() => dispatch(setLoading(false)));
   };
 
   return (
