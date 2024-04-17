@@ -21,39 +21,63 @@ function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const login = () => {
+  const login = async () => {
     if (!username || !password) {
       toastService.warn("Tüm alanları doldurunuz");
       return;
     }
     dispatch(setLoading(true));
-    loginService
-      .login({ username, password })
-      .then((response) => {
-        if (response?.data?.result) {
-          const token = response?.data?.data?.token;
-          storageService.writeToken(token);
-          storageService.writeRefreshToken(response?.data?.data?.refreshToken);
 
-          const role = storageService.getRole();
+    try {
+      const loginResponse = await loginService.login({ username, password });
+      if (loginResponse?.data?.result) {
+        storageService.writeToken(loginResponse?.data?.data?.token);
+        storageService.writeRefreshToken(
+          loginResponse?.data?.data?.refreshToken
+        );
 
-          menuService
-            .getMenuListByRoleCode(role)
-            .then((response) => {
-              dispatch(setMenu(response.data?.data));
+        const role = storageService.getRole();
 
-              dispatch(setIsAuthenticate(true));
-              navigate("/");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+        const menuResponse = await menuService.getMenuListByRoleCode(role);
+        if (menuResponse?.data?.result) {
+          dispatch(setMenu(menuResponse.data?.data));
+          dispatch(setIsAuthenticate(true));
+          navigate("/");
         }
-      })
-      .catch((err) => {
-        console.log("err ", err);
-      })
-      .finally(() => dispatch(setLoading(false)));
+      }
+    } catch (error) {
+      console.log("login hata ", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+
+    // loginService
+    //   .login({ username, password })
+    //   .then((response) => {
+    //     if (response?.data?.result) {
+    //       const token = response?.data?.data?.token;
+    //       storageService.writeToken(token);
+    //       storageService.writeRefreshToken(response?.data?.data?.refreshToken);
+
+    //       const role = storageService.getRole();
+
+    //       menuService
+    //         .getMenuListByRoleCode(role)
+    //         .then((response) => {
+    //           dispatch(setMenu(response.data?.data));
+
+    //           dispatch(setIsAuthenticate(true));
+    //           navigate("/");
+    //         })
+    //         .catch((err) => {
+    //           console.log(err);
+    //         });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("err ", err);
+    //   })
+    //   .finally(() => dispatch(setLoading(false)));
   };
 
   return (

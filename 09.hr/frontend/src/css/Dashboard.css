@@ -2,12 +2,12 @@
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
-  background-color: #232c35;
+  background-color: transparent;
   color: #d1d1d1;
   cursor: pointer;
 }
 
 .logout:hover {
-  background-color: #33383d;
+  color: #fff;
   transition: 0.2s linear;
 }

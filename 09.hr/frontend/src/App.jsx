@@ -25,7 +25,7 @@ function App() {
           //3- Tree Menü yapısı
 
           //YAP BUNLARI
-          // 1- logout
+          // okey 1- logout
           // 2- Router yapısı
           // 3- URL üzerinden kaçmaya çalışırsa ancak bu isAuthenticate'e bağlı olduğu için simdilik kalsın.
           dispatch(setMenu(response?.data?.data));
