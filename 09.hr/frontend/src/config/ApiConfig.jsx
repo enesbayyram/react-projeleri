@@ -12,7 +12,6 @@ const BASE_URL = "http://localhost:8080/hr/api/";
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: `Bearer ${storageService.getToken()}`,
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
   },
@@ -36,6 +35,19 @@ const logout = () => {
   storageService.removeRefreshToken();
   window.location.href = "/login";
 };
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = storageService.getToken();
+    if (token) {
+      config.headers["Authorization"] = "Bearer " + token;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 axiosInstance.interceptors.response.use(
   (res) => {
