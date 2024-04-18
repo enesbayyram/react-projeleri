@@ -18,6 +18,15 @@ class LoginService {
         .catch((err) => reject(err));
     });
   };
+
+  getCurrentUser = (username) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`/getCurrentUser/${username}`)
+        .then((response) => resolve(response))
+        .catch((err) => reject(err));
+    });
+  };
 }
 
 export default new LoginService();

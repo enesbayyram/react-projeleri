@@ -4,15 +4,34 @@ import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import Dashboard from "../pages/Dashboard";
+import PersonelOperations from "../pages/PersonelOperations";
+import ZimmetOperations from "../pages/ZimmetOperations";
+import PrivateRoutes from "./PrivateRoutes";
+import sessionService from "../services/StorageService";
+import { useDispatch, useSelector } from "react-redux";
 
 function RouterConfig() {
+  const { isAuthenticate } = useSelector((store) => store.app);
   return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-    </Routes>
+    <div>
+      {isAuthenticate ? (
+        <PrivateRoutes>
+          <Routes>
+            <Route
+              path="/personel-operations"
+              element={<PersonelOperations />}
+            />
+            <Route path="/zimmet-operations" element={<ZimmetOperations />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Routes>
+        </PrivateRoutes>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      )}
+    </div>
   );
 }
-
 export default RouterConfig;

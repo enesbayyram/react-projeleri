@@ -1,6 +1,7 @@
 package com.enesbayram.hr.controller.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,13 @@ public class RestAuthControllerImpl extends RestBaseController implements IRestA
 	@Override
 	public HrRootEntity<AuthResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
 		return ok(authService.refreshToken(refreshTokenRequest));
+	}
+
+	@Operation(summary = "${hr.api.permit-all.get-current-user.description}")
+	@PostMapping("/getCurrentUser/{username}")
+	@Override
+	public HrRootEntity<DtoUserDef> getCurrentUser(@PathVariable("username") String username) {
+		return ok(authService.getCurrenctUser(username));
 	}
 
 }

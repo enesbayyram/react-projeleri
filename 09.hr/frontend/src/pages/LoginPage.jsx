@@ -11,7 +11,11 @@ import { useNavigate } from "react-router-dom";
 import toastService from "../services/ToastService";
 import menuService from "../services/MenuService";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAuthenticate, setLoading } from "../redux/slices/appSlice";
+import {
+  setCurrentUser,
+  setIsAuthenticate,
+  setLoading,
+} from "../redux/slices/appSlice";
 import { setMenu } from "../redux/slices/menuSlice";
 
 function LoginPage() {
@@ -43,6 +47,12 @@ function LoginPage() {
           dispatch(setMenu(menuResponse.data?.data));
           dispatch(setIsAuthenticate(true));
           navigate("/");
+        }
+
+        const username = storageService.getUsername();
+        const response = await loginService.getCurrentUser(username);
+        if (response.data?.result) {
+          dispatch(setCurrentUser(response.data?.data));
         }
       }
     } catch (error) {

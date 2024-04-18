@@ -19,6 +19,8 @@ import { IoPersonSharp } from "react-icons/io5";
 import "../css/Dashboard.css";
 import storageService from "../services/StorageService";
 import { useNavigate } from "react-router-dom";
+import { sideBarIcons } from "../statics/data/SideBarIcons";
+import { setIsAuthenticate } from "../redux/slices/appSlice";
 
 const drawerWidth = 200;
 
@@ -87,11 +89,12 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-function Sidebar() {
+function Sidebar({ children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleDrawer = () => {
     setOpen(!open);
@@ -100,6 +103,7 @@ function Sidebar() {
   const logout = () => {
     storageService.removeToken();
     storageService.removeRefreshToken();
+    dispatch(setIsAuthenticate(false));
     navigate("/login");
   };
 
@@ -176,6 +180,7 @@ function Sidebar() {
             menuList.map((menu, index) => (
               <ListItem key={menu.id} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
+                  onClick={() => navigate(menu.menuLink)}
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
@@ -189,9 +194,11 @@ function Sidebar() {
                       justifyContent: "center",
                     }}
                   >
-                    <IoPersonSharp
-                      style={{ fontSize: "17px", color: "lightgrey" }}
-                    />
+                    {sideBarIcons.map((sideBarIcon) => {
+                      if (menu.icon == sideBarIcon.name) {
+                        return sideBarIcon.icon;
+                      }
+                    })}
                   </ListItemIcon>
                   <Typography
                     variant="h6"
@@ -210,6 +217,10 @@ function Sidebar() {
             ))}
         </List>
       </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
+        {children}
+      </Box>
     </Box>
   );
 }

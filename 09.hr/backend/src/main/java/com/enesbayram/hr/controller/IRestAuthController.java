@@ -14,4 +14,6 @@ public interface IRestAuthController {
 	HrRootEntity<AuthResponse> authenticate(AuthRequest authRequest);
 	
 	HrRootEntity<AuthResponse> refreshToken(RefreshTokenRequest refreshTokenRequest);
+	
+	HrRootEntity<DtoUserDef> getCurrentUser(String username);
 }

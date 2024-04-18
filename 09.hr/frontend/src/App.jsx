@@ -7,7 +7,11 @@ import storageService from "./services/StorageService";
 import menuService from "./services/MenuService";
 import loginService from "./services/LoginService";
 import { setMenu } from "./redux/slices/menuSlice";
-import { setLoading } from "./redux/slices/appSlice";
+import {
+  setCurrentUser,
+  setIsAuthenticate,
+  setLoading,
+} from "./redux/slices/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
@@ -25,8 +29,6 @@ function App() {
           //3- Tree Menü yapısı
 
           //YAP BUNLARI
-          // okey 1- logout
-          // 2- Router yapısı
           // 3- URL üzerinden kaçmaya çalışırsa ancak bu isAuthenticate'e bağlı olduğu için simdilik kalsın.
           dispatch(setMenu(response?.data?.data));
         })
@@ -34,12 +36,25 @@ function App() {
     }
   };
 
-  // const authenticate = ()=>{
-  //   loginService.login()
-  // }
+  const getCurrentUser = () => {
+    const username = storageService.getUsername();
+    loginService
+      .getCurrentUser(username)
+      .then((response) => {
+        if (response.data?.result) {
+          dispatch(setIsAuthenticate(true));
+          dispatch(setCurrentUser(response.data?.data));
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     getMenuListByRoleCode();
+  }, []);
+
+  useEffect(() => {
+    getCurrentUser();
   }, []);
 
   return (

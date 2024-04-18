@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +30,7 @@ import com.enesbayram.hr.model.api.RefreshTokenRequest;
 import com.enesbayram.hr.repository.UserDefRepository;
 import com.enesbayram.hr.service.IAuthService;
 import com.enesbayram.hr.service.IRefreshTokenService;
+import com.enesbayram.hr.service.IUserDefService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,8 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 	private final JwtService jwtService;
 
 	private final IRefreshTokenService refreshTokenService;
+
+	private final IUserDefService userDefService;
 
 	@Value("${refresh-token.expiredIn}")
 	private long refreshTokenExpiredIn;
@@ -77,7 +81,6 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 		return toDTO(savedUserDef);
 	}
 
-
 	@Transactional(propagation = Propagation.NEVER)
 	@Override
 	public AuthResponse authenticate(AuthRequest authRequest) {
@@ -93,19 +96,20 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 		String token = jwtService.generateToken(userDefOpt.get());
 
 		response.setToken(token);
-		
-		
+
 		RefreshToken refreshToken = refreshTokenService.findRefreshTokenByUserDef(userDefOpt.get());
-		if(refreshToken==null) {
-			RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
+		if (refreshToken == null) {
+			RefreshToken newRefreshToken = refreshTokenService
+					.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
 			response.setRefreshToken(newRefreshToken.getRefreshToken());
-		}else {
+		} else {
 			boolean isRefreshTokenValid = refreshTokenService.isRefreshTokenValid(refreshToken);
-			if(isRefreshTokenValid) {
+			if (isRefreshTokenValid) {
 				response.setRefreshToken(refreshToken.getRefreshToken());
-			}else {
+			} else {
 				refreshTokenService.deleteRefreshToken(refreshToken);
-				RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
+				RefreshToken newRefreshToken = refreshTokenService
+						.createRefreshToken(createRefreshTokenModel(userDefOpt.get()));
 				response.setRefreshToken(newRefreshToken.getRefreshToken());
 			}
 		}
@@ -129,6 +133,19 @@ public class AuthServiceImpl extends BaseDbServiceImpl<UserDefRepository, UserDe
 		String token = jwtService.generateToken(refreshToken.getUserDef());
 		return AuthResponse.builder().token(token).refreshToken(refreshToken.getRefreshToken()).build();
 
+	}
+
+	@Override
+	public DtoUserDef getCurrenctUser(String username) {
+		if (StringUtils.isEmpty(username)) {
+			throw new HRBaseException(
+					new HrMessage(HRMessageType.FIELD_IS_REGUIRED_1001, HRMessageFactory.ofStatic(username)));
+		}
+		UserDef userDef = userDefService.findByUsername(username);
+		if (userDef != null) {
+			return toDTO(userDef);
+		}
+		return null;
 	}
 
 }

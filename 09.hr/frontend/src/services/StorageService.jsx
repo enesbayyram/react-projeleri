@@ -29,6 +29,13 @@ class StorageService {
     return "";
   };
 
+  getUsername = () => {
+    if (localStorage.getItem(TOKEN)) {
+      return jwtDecode(localStorage.getItem(TOKEN))?.sub;
+    }
+    return "";
+  };
+
   removeToken = () => {
     localStorage.removeItem(TOKEN);
   };

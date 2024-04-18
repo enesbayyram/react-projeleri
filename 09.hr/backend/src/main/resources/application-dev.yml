@@ -11,3 +11,5 @@ hr:
         description: 'Role id sine göre kişinin yetkisinin olduğu aksiyonları getirir.'
       get-menulist-by-rolecode:
         description: 'Role koduna göre erişebileceği menülerin getirilmesi'
+      get-current-user:
+        description: 'Username değerine göre kullanıcının bilgilerini getiren ve Authorization olup olmadığını sağlanılan servistir.'

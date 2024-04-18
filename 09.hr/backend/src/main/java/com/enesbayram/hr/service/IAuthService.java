@@ -14,5 +14,7 @@ public interface IAuthService {
 	
 	
 	AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+	
+	DtoUserDef getCurrenctUser(String username);
 
 }

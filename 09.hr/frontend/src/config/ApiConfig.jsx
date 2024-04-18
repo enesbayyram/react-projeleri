@@ -71,7 +71,6 @@ axiosInstance.interceptors.response.use(
             axiosInstance
               .request(originalConfig)
               .then((res) => {
-                console.log("axios ", res);
                 return res;
               })
               .catch((err) => errorHandler(err));
