@@ -163,11 +163,13 @@ function Sidebar({ children }) {
             justifyContent: "center",
           }}
         >
+          <Link to="/">
           <Box
             component="img"
             sx={{ width: "50px", height: "50px" }}
             src="src/assets/hr-logo.png"
           />
+          </Link>
         </DrawerHeader>
         <Divider sx={{ borderBottomWidth: "0.2px" }} />
         <List
@@ -180,7 +182,6 @@ function Sidebar({ children }) {
           {menuList &&
             menuList.map((menu, index) => (
               <ListItem key={menu.id} disablePadding sx={{ display: "block" }}>
-               {/* <Link to={menu.menuLink} onClick={()=> window.location.refresh()} style={{textDecoration:'none' , color:'lightgrey'}}> */}
                 <ListItemButton
                 onClick={()=> navigate(menu.menuLink)}
                   sx={{

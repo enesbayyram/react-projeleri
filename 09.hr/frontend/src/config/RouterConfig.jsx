@@ -30,7 +30,7 @@ function RouterConfig() {
         </PrivateRoutes>
       ) : (
         <Routes>
-          {["/" , "/login"].map((path)=>  <Route path={path} element={<LoginPage />} />)}
+          {["/" , "/login"].map((path , index)=>  <Route key={index} path={path} element={<LoginPage />} />)}
         </Routes>
       )}
     </div>
