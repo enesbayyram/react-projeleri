@@ -1,29 +1,18 @@
-import React from "react";
+import React  from "react";
 import Dashboard from "../pages/Dashboard";
-import LoginPage from "../pages/LoginPage";
 import Layout from "../pages/Layout";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import menuService from "../services/MenuService";
+import { useLocation } from "react-router-dom";
 
-function PrivateRoutes({ children }) {
+
+ const PrivateRoutes = ({children})=>{
   const { menuList } = useSelector((store) => store.menu);
+  const location = useLocation();
 
-  const isAccessMenu = () => {
-    console.log(menuList);
-    let result = false;
-    menuList.map((menu) => {
-      if (menu.menuLink === window.location.pathname) {
-        result = true;
-      }
-    });
-    return result;
-  };
-
-  return (
-    <>
-      <Layout children={children} />
-    </>
-  );
+  return menuService.isAccessMenu(menuList, location.pathname) ?  <Layout children={children} /> :  <Layout children={<Dashboard/>} />;
 }
 
-export default PrivateRoutes;
+
+export default PrivateRoutes
+

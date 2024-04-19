@@ -40,19 +40,20 @@ function LoginPage() {
           loginResponse?.data?.data?.refreshToken
         );
 
-        const role = storageService.getRole();
+        const username = storageService.getUsername();
+        const response = await loginService.getCurrentUser(username);
+        if (response.data?.result) {
+          dispatch(setCurrentUser(response.data?.data));
+        }
 
+        const role = storageService.getRole();
         const menuResponse = await menuService.getMenuListByRoleCode(role);
         if (menuResponse?.data?.result) {
           dispatch(setMenu(menuResponse.data?.data));
           dispatch(setIsAuthenticate(true));
           navigate("/");
-        }
-
-        const username = storageService.getUsername();
-        const response = await loginService.getCurrentUser(username);
-        if (response.data?.result) {
-          dispatch(setCurrentUser(response.data?.data));
+        } else {
+          navigate("/login");
         }
       }
     } catch (error) {
@@ -60,34 +61,6 @@ function LoginPage() {
     } finally {
       dispatch(setLoading(false));
     }
-
-    // loginService
-    //   .login({ username, password })
-    //   .then((response) => {
-    //     if (response?.data?.result) {
-    //       const token = response?.data?.data?.token;
-    //       storageService.writeToken(token);
-    //       storageService.writeRefreshToken(response?.data?.data?.refreshToken);
-
-    //       const role = storageService.getRole();
-
-    //       menuService
-    //         .getMenuListByRoleCode(role)
-    //         .then((response) => {
-    //           dispatch(setMenu(response.data?.data));
-
-    //           dispatch(setIsAuthenticate(true));
-    //           navigate("/");
-    //         })
-    //         .catch((err) => {
-    //           console.log(err);
-    //         });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("err ", err);
-    //   })
-    //   .finally(() => dispatch(setLoading(false)));
   };
 
   return (
@@ -102,6 +75,8 @@ function LoginPage() {
             variant="outlined"
             size="small"
             InputProps={{
+              style:{
+              },
               startAdornment: (
                 <InputAdornment position="start">
                   <FaUser />
@@ -136,7 +111,7 @@ function LoginPage() {
             className="login-button"
             variant="contained"
             size="small"
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none" ,  backgroundColor:'#587094' , color:'#fff'}}
           >
             Giriş Yap
           </Button>
@@ -146,7 +121,7 @@ function LoginPage() {
             className="register-button"
             size="small"
             color="success"
-            sx={{ marginLeft: "5px", textTransform: "none" }}
+            sx={{ marginLeft: "5px", textTransform: "none"  , backgroundColor:'#50be8d' , color:'#fff'}}
             onClick={() => navigate("/register")}
           >
             Kayıt Ol

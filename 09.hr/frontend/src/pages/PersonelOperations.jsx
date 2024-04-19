@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function PersonelOperations() {
+
   return <div>Personel İşlemleri</div>;
 }
 

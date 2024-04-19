@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function RouterConfig() {
   const { isAuthenticate } = useSelector((store) => store.app);
+
   return (
     <div>
       {isAuthenticate ? (
@@ -24,11 +25,12 @@ function RouterConfig() {
             <Route path="/zimmet-operations" element={<ZimmetOperations />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="*" element={<Dashboard/>}/>
           </Routes>
         </PrivateRoutes>
       ) : (
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          {["/" , "/login"].map((path)=>  <Route path={path} element={<LoginPage />} />)}
         </Routes>
       )}
     </div>

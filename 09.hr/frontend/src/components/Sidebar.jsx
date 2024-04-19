@@ -15,12 +15,13 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { IoPersonSharp } from "react-icons/io5";
 import "../css/Dashboard.css";
 import storageService from "../services/StorageService";
 import { useNavigate } from "react-router-dom";
 import { sideBarIcons } from "../statics/data/SideBarIcons";
 import { setIsAuthenticate } from "../redux/slices/appSlice";
+import { Link } from "react-router-dom";
+
 
 const drawerWidth = 200;
 
@@ -179,8 +180,9 @@ function Sidebar({ children }) {
           {menuList &&
             menuList.map((menu, index) => (
               <ListItem key={menu.id} disablePadding sx={{ display: "block" }}>
+               {/* <Link to={menu.menuLink} onClick={()=> window.location.refresh()} style={{textDecoration:'none' , color:'lightgrey'}}> */}
                 <ListItemButton
-                  onClick={() => navigate(menu.menuLink)}
+                onClick={()=> navigate(menu.menuLink)}
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
@@ -213,6 +215,7 @@ function Sidebar({ children }) {
                     {menu.menuText}
                   </Typography>
                 </ListItemButton>
+                {/* </Link> */}
               </ListItem>
             ))}
         </List>

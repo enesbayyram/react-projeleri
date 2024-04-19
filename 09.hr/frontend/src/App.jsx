@@ -38,7 +38,8 @@ function App() {
 
   const getCurrentUser = () => {
     const username = storageService.getUsername();
-    loginService
+    if(username){
+      loginService
       .getCurrentUser(username)
       .then((response) => {
         if (response.data?.result) {
@@ -46,7 +47,8 @@ function App() {
           dispatch(setCurrentUser(response.data?.data));
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
+    }
   };
 
   useEffect(() => {

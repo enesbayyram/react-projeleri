@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url("../assets/hr.png");
+  background-image: url("../assets/hr-background.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -13,11 +13,19 @@
 
 .login-page {
   padding: 50px;
-  background-color: hsl(0, 0%, 100%);
+  background: rgba(255, 255, 255, 0.6);
   border: 1px solid lightgrey;
   border-radius: 5px;
-  box-shadow: 1px 5px 30px black;
+  box-shadow: 1px 5px 20px rgb(65, 64, 64);
   margin-top: -150px;
+}
+
+.login-button:hover{
+  background-color: #526480 !important;
+}
+
+.register-button:hover{
+  background-color: #48b182 !important;
 }
 
 .button-div {

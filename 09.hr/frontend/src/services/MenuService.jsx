@@ -9,6 +9,16 @@ class MenuService {
         .catch((err) => reject(err));
     });
   };
+
+  isAccessMenu = (menuList, destinationPath) => {
+    let result =false;
+     menuList.map((menu) => {
+      if(menu.menuLink == destinationPath){
+        result = true;
+      }
+    });
+    return result;
+  };
 }
 
 export default new MenuService();

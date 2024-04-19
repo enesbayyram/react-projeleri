@@ -145,7 +145,7 @@ function RegisterPage() {
             className="register-button"
             size="small"
             color="success"
-            sx={{ marginLeft: "5px", textTransform: "none" }}
+            sx={{ marginRight: "5px", textTransform: "none"  , backgroundColor:'#50be8d' , color:'#fff'}}
             onClick={register}
           >
             Kayıt Ol
@@ -156,7 +156,7 @@ function RegisterPage() {
             className="clear-button"
             size="small"
             color="inherit"
-            sx={{ marginLeft: "5px", textTransform: "none" }}
+            sx={{ textTransform: "none" ,  backgroundColor:'#587094' , color:'#fff'}}
             onClick={clear}
           >
             Temizle
