@@ -25,11 +25,8 @@ function App() {
         .then((response) => {
           // SOR BUNLARI
           //1-enese sor refresh tokendan sonra redux ın null kalması
-          //2-Sayfa yenilendiğinde authenticate olup olmadığını backende ne gönderilir tartış biraz
           //3- Tree Menü yapısı
 
-          //YAP BUNLARI
-          // 3- URL üzerinden kaçmaya çalışırsa ancak bu isAuthenticate'e bağlı olduğu için simdilik kalsın.
           dispatch(setMenu(response?.data?.data));
         })
         .catch((error) => {});

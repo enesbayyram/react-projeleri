@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
@@ -12,6 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 function RouterConfig() {
   const { isAuthenticate } = useSelector((store) => store.app);
+  const navigate = useNavigate();
+
+
 
   return (
     <div>

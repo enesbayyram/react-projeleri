@@ -101,12 +101,19 @@ function Sidebar({ children }) {
     setOpen(!open);
   };
 
+  window.onresize = ()=>{
+    if(window.screen.width<=480){
+      setOpen(false);
+    }
+  }
+
   const logout = () => {
     storageService.removeToken();
     storageService.removeRefreshToken();
     dispatch(setIsAuthenticate(false));
     navigate("/login");
   };
+
 
   const { menuList } = useSelector((store) => store.menu);
 
