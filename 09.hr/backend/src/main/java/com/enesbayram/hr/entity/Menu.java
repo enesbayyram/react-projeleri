@@ -6,6 +6,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +22,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "menu")
+@NamedEntityGraph(name = "menu_details" , attributeNodes = {
+		@NamedAttributeNode(value = "parentMenu"),
+})
 public class Menu extends BaseDbEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -37,5 +44,8 @@ public class Menu extends BaseDbEntity {
 
 	@Column(name = "is_active")
 	private Boolean isActive;
+	
+	@ManyToOne
+	private Menu parentMenu;
 
 }

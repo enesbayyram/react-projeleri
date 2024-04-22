@@ -3,11 +3,10 @@ package com.enesbayram.hr.controller.impl;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.enesbayram.hr.controller.IRestMenuController;
-import com.enesbayram.hr.dto.DtoMenu;
+import com.enesbayram.hr.dto.DtoScreenMenu;
 import com.enesbayram.hr.model.api.HrRootEntity;
 import com.enesbayram.hr.service.IMenuService;
 
@@ -20,11 +19,11 @@ public class RestMenuControllerImpl extends RestBaseController implements IRestM
 
 	private final IMenuService menuService;
 	
-	@Operation(summary = "${hr.api.permit-all.get-menulist-by-rolecode.description}")
-	@GetMapping("/get-menulist-by-rolecode/{roleCode}")
+	@Operation(summary = "${hr.api.permit-all.get-current-user-authorized-menu.description}")
+	@GetMapping("/get-current-user-authorized-menu")
 	@Override
-	public HrRootEntity<List<DtoMenu>> getMenuListByRoleCode(@PathVariable("roleCode") String roleCode) {
-		return ok(menuService.getMenuListByRoleCode(roleCode));
+	public HrRootEntity<List<DtoScreenMenu>> getCurrentUserAuthorizedMenu() {
+		return ok(menuService.getCurrentUserAuthorizedMenu());
 	}
 
 }

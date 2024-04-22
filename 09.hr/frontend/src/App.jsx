@@ -17,11 +17,11 @@ import { useDispatch, useSelector } from "react-redux";
 function App() {
   const dispatch = useDispatch();
 
-  const getMenuListByRoleCode = () => {
+  const getCurrentUserAuthorizedMenu = () => {
     const roleCode = storageService.getRole();
     if (roleCode) {
       menuService
-        .getMenuListByRoleCode(roleCode)
+        .getCurrentUserAuthorizedMenu()
         .then((response) => {
           // SOR BUNLARI
           //1-enese sor refresh tokendan sonra redux ın null kalması
@@ -49,7 +49,7 @@ function App() {
   };
 
   useEffect(() => {
-    getMenuListByRoleCode();
+    getCurrentUserAuthorizedMenu();
   }, []);
 
   useEffect(() => {

@@ -1,0 +1,45 @@
+.MuiTreeItem-label{
+    font-size: 12px !important;
+   color: lightgrey;
+   font-family: Arial, Helvetica, sans-serif !important;
+   width: 100%;
+}
+
+.MuiTreeItem-content{
+    padding: 5px 0px !important;
+    gap: 0px !important;
+}
+
+.MuiCollapse-root {
+    width: 100% !important;
+    margin-top: 2px !important;
+    margin-left: 12px !important;
+}
+
+.MuiTreeItem-iconContainer >svg{
+    font-size: 25px !important;
+}
+
+.MuiSvgIcon-root  .MuiTreeItem-label{
+    margin-left: 20px !important;
+}
+
+.MuiSvgIcon-root svg{
+    font-size: 5px;
+}
+
+
+.simple-tree-view{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-item-button{
+    display:'flex' ;
+    flex-direction : row ;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+}

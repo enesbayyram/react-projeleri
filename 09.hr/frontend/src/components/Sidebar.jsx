@@ -22,8 +22,9 @@ import { sideBarIcons } from "../statics/data/SideBarIcons";
 import { setIsAuthenticate } from "../redux/slices/appSlice";
 import { Link } from "react-router-dom";
 
+import TreeView from "./TreeView";
 
-const drawerWidth = 200;
+const drawerWidth = 210;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -101,11 +102,11 @@ function Sidebar({ children }) {
     setOpen(!open);
   };
 
-  window.onresize = ()=>{
-    if(window.screen.width<=480){
+  window.onresize = () => {
+    if (window.screen.width <= 480) {
       setOpen(false);
     }
-  }
+  };
 
   const logout = () => {
     storageService.removeToken();
@@ -113,7 +114,6 @@ function Sidebar({ children }) {
     dispatch(setIsAuthenticate(false));
     navigate("/login");
   };
-
 
   const { menuList } = useSelector((store) => store.menu);
 
@@ -171,11 +171,11 @@ function Sidebar({ children }) {
           }}
         >
           <Link to="/">
-          <Box
-            component="img"
-            sx={{ width: "50px", height: "50px" }}
-            src="src/assets/hr-logo.png"
-          />
+            <Box
+              component="img"
+              sx={{ width: "50px", height: "50px" }}
+              src="src/assets/hr-logo.png"
+            />
           </Link>
         </DrawerHeader>
         <Divider sx={{ borderBottomWidth: "0.2px" }} />
@@ -186,46 +186,7 @@ function Sidebar({ children }) {
             height: "100vh",
           }}
         >
-          {menuList &&
-            menuList.map((menu, index) => (
-              <ListItem key={menu.id} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                onClick={()=> navigate(menu.menuLink)}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {sideBarIcons.map((sideBarIcon) => {
-                      if (menu.icon == sideBarIcon.name) {
-                        return sideBarIcon.icon;
-                      }
-                    })}
-                  </ListItemIcon>
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{
-                      opacity: open ? 1 : 0,
-                      fontSize: "13px",
-                      fontFamily: "arial",
-                    }}
-                  >
-                    {menu.menuText}
-                  </Typography>
-                </ListItemButton>
-                {/* </Link> */}
-              </ListItem>
-            ))}
+         <TreeView open={open}/>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

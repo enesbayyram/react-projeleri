@@ -46,8 +46,7 @@ function LoginPage() {
           dispatch(setCurrentUser(response.data?.data));
         }
 
-        const role = storageService.getRole();
-        const menuResponse = await menuService.getMenuListByRoleCode(role);
+        const menuResponse = await menuService.getCurrentUserAuthorizedMenu();
         if (menuResponse?.data?.result) {
           dispatch(setMenu(menuResponse.data?.data));
           dispatch(setIsAuthenticate(true));
