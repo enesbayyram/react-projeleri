@@ -20,7 +20,16 @@ import storageService from "../services/StorageService";
 import { useNavigate } from "react-router-dom";
 import { sideBarIcons } from "../statics/data/SideBarIcons";
 import { setIsAuthenticate } from "../redux/slices/appSlice";
+import Button from "@mui/material/Button";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
+import { IoLogOutOutline } from "react-icons/io5";
+import { IoMdSettings } from "react-icons/io";
+
+
+
 
 import TreeView from "./TreeView";
 
@@ -92,8 +101,24 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 function Sidebar({ children }) {
+
+
+  const {currentUser} = useSelector((store)=> store.app);
+
   const theme = useTheme();
   const [open, setOpen] = useState(true);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [menuOpen , setMenuOpen] = useState(false);
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+    setMenuOpen(true);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setMenuOpen(false);
+  };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -156,9 +181,48 @@ function Sidebar({ children }) {
               İnsan Kaynakları
             </Typography>
           </div>
-          <button className="logout" onClick={logout}>
-            Çıkış
-          </button>
+
+          <Button
+            id="demo-positioned-button"
+            className="logout"
+            aria-controls={menuOpen ? "demo-positioned-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={menuOpen ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <div style={{display:'flex' , alignItems:'center', justifyContent:'center'}}>
+             <CgProfile className="profile" style={{marginRight:'5px'}} />
+             <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ fontSize: "13px", fontFamily: "arial", textTransform:'none' , color:'lightgrey' }}
+            >
+            {currentUser.firstname}
+            </Typography>
+             </div>
+          </Button>
+
+          <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={anchorEl}
+        open={menuOpen}
+        onClose={handleClose}
+       
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={handleClose}><CgProfile className="menu-icon"/> Hesabım</MenuItem>
+        <MenuItem onClick={handleClose}><IoMdSettings className="menu-icon"/>Ayarlar</MenuItem>
+        <MenuItem onClick={logout }><IoLogOutOutline className="menu-icon" /> Çıkış</MenuItem>
+      </Menu>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -186,7 +250,7 @@ function Sidebar({ children }) {
             height: "100vh",
           }}
         >
-         <TreeView open={open}/>
+          <TreeView open={open} />
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

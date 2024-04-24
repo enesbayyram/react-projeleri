@@ -11,3 +11,23 @@
   color: #fff;
   transition: 0.2s linear;
 }
+
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+top: 46px !important;
+}
+
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root{
+  font-size: 13px !important;
+}
+
+.profile{
+  /* style={{fontSize:'24px' , color:'lightgrey'}} */
+  font-size: 24px;
+  color: lightgrey;
+}
+
+.menu-icon{
+  margin-right: 5px;
+  color: black;
+  font-size: 17px;
+}

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.enesbayram.hr.dto.DtoUserDef;
 import com.enesbayram.hr.dto.base.DtoBaseModel;
 import com.enesbayram.hr.dto.base.DtoCrudModel;
 import com.enesbayram.hr.entity.BaseDbEntity;
