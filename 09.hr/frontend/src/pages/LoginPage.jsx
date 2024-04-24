@@ -10,6 +10,8 @@ import storageService from "../services/StorageService";
 import { useNavigate } from "react-router-dom";
 import toastService from "../services/ToastService";
 import menuService from "../services/MenuService";
+import { makeStyles } from "@material-ui/core/styles";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentUser,
@@ -19,9 +21,34 @@ import {
 import { setMenu } from "../redux/slices/menuSlice";
 
 function LoginPage() {
+
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const useStyles = makeStyles({
+    root: {
+      // input label when focused
+      "& label.Mui-focused": {
+        color: "#262c2e"
+      },
+      // focused color for input with variant='standard'
+      "& .MuiInput-underline:after": {
+        borderBottomColor: "#262c2e"
+      },
+      // focused color for input with variant='filled'
+      "& .MuiFilledInput-underline:after": {
+        borderBottomColor: "#262c2e"
+      },
+      // focused color for input with variant='outlined'
+      "& .MuiOutlinedInput-root": {
+        "&.Mui-focused fieldset": {
+          borderColor: "#262c2e"
+        }
+      }
+    }
+  });
+  const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -63,22 +90,24 @@ function LoginPage() {
   };
 
   return (
+    
     <div className="container">
       <div className="login-page">
         <div>
           <TextField
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="input-username"
+            className={classes.root}
             label="Kullanıcı adı"
             variant="outlined"
             size="small"
             InputProps={{
               style:{
+               
               },
               startAdornment: (
                 <InputAdornment position="start">
-                  <FaUser />
+                  <FaUser style={{color:'black'}} />
                 </InputAdornment>
               ),
             }}
@@ -89,7 +118,7 @@ function LoginPage() {
             value={password}
             type="password"
             onChange={(e) => setPassword(e.target.value)}
-            className="input-password"
+            className={classes.root}
             size="small"
             label="Şifre"
             variant="outlined"
@@ -97,7 +126,7 @@ function LoginPage() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <RiLockPasswordFill />
+                  <RiLockPasswordFill style={{color:'black'}} />
                 </InputAdornment>
               ),
             }}
@@ -110,7 +139,6 @@ function LoginPage() {
             className="login-button"
             variant="contained"
             size="small"
-            sx={{ textTransform: "none" ,  backgroundColor:'#587094' , color:'#fff'}}
           >
             Giriş Yap
           </Button>
@@ -120,7 +148,6 @@ function LoginPage() {
             className="register-button"
             size="small"
             color="success"
-            sx={{ marginLeft: "5px", textTransform: "none"  , backgroundColor:'#50be8d' , color:'#fff'}}
             onClick={() => navigate("/register")}
           >
             Kayıt Ol

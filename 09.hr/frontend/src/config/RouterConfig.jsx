@@ -17,6 +17,12 @@ function RouterConfig() {
   const navigate = useNavigate();
 
 
+  useEffect(()=>{
+    if(!localStorage.getItem("token")){
+      navigate("/login");
+    }
+  } , [])
+
 
   return (
     <div>
@@ -37,7 +43,7 @@ function RouterConfig() {
         </PrivateRoutes>
       ) : (
         <Routes>
-           {["/login"].map((path , index)=>  <Route key={index} path={path} element={<LoginPage />} />)}
+           {["/","/login"].map((path , index)=>  <Route key={index} path={path} element={<LoginPage />} />)}
         </Routes>
       )}
     </div>
