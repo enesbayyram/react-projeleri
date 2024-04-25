@@ -27,10 +27,12 @@ const refreshToken = async () => {
     refreshToken: storageService.getRefreshToken(),
   };
   const response = await axiosInstance.post("/refreshToken", payload);
+  console.log("refresh token response " , response)
   return response;
 };
 
 const logout = () => {
+  console.log("logout olacak")
   storageService.removeToken();
   storageService.removeRefreshToken();
   window.location.href = "/login";
@@ -74,11 +76,10 @@ axiosInstance.interceptors.response.use(
                 return res;
               })
               .catch((err) => errorHandler(err));
-          } else {
-            logout();
-          }
+          } 
           return instance(originalConfig);
         } catch (err) {
+          logout();
           errorHandler(err);
         }
       }
