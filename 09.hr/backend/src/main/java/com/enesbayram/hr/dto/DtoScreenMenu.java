@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.enesbayram.hr.dto.base.DtoEntityModel;
+import com.enesbayram.hr.enums.MenuType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,11 +17,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DtoScreenMenu extends DtoEntityModel{
 	
-	public DtoScreenMenu(DtoMenu parentMenu) {
-		this.parentMenu = parentMenu;
-	}
+	private String icon;
 
-	private DtoMenu parentMenu;
+	private String menuLink;
+
+	private String menuText;
+
+	private MenuType menuType;
+
+	private Boolean isActive;
 	
-	private List<DtoMenu> children = new ArrayList<>();
+	private String parentMenuId;
+	
+	private List<DtoScreenMenu> children = new ArrayList<>();
+	
 }

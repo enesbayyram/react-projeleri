@@ -25,4 +25,6 @@ public class DtoMenu extends DtoEntityModel{
 	private MenuType menuType;
 
 	private Boolean isActive;
+	
+	private String parentMenuId;
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.enesbayram.hr.dto.DtoMenu;
@@ -37,6 +38,17 @@ public class MenuServiceImpl extends BaseDbServiceImpl<MenuRepository, Menu> imp
 		return DtoMenu.class;
 	}
 
+	@SuppressWarnings("null")
+	public DtoScreenMenu convertDtoScreenMenu(Menu menu) {
+		DtoScreenMenu dtoScreenMenu = new DtoScreenMenu();
+		BeanUtils.copyProperties(menu, dtoScreenMenu);
+
+		if (menu.getParentMenu() != null) {
+			dtoScreenMenu.setParentMenuId(menu.getParentMenu().getId());
+		}
+		return dtoScreenMenu;
+	}
+
 	@Override
 	public List<DtoScreenMenu> getCurrentUserAuthorizedMenu() {
 		List<UserRole> userRoles = userRoleService
@@ -45,41 +57,67 @@ public class MenuServiceImpl extends BaseDbServiceImpl<MenuRepository, Menu> imp
 			String roleCode = userRoles.get(0).getRoleDef().getRoleCode();
 			List<Menu> menuList = dao.getMenuListByRoleCode(roleCode);
 			if (menuList != null && !menuList.isEmpty()) {
-				return prepareTreeMenu(menuList);
+				return buildTreeMenu(menuList);
 			}
-
 		}
-
 		return Collections.emptyList();
 	}
 
-	public List<Menu> addMenuToMap(List<Menu> menuList, Menu newMenu) {
-		menuList.add(newMenu);
-		return menuList;
+	public List<DtoScreenMenu> buildTreeMenu(List<Menu> menuList) {
+		List<DtoScreenMenu> treeMenu = new ArrayList<>();
+
+		for (DtoScreenMenu rootMenu : getRootMenus(menuList)) {
+			treeMenu.add(findChildrenMenu(rootMenu, menuList));
+		}
+		return treeMenu;
 	}
 
-	public List<DtoScreenMenu> prepareTreeMenu(List<Menu> menuList) {
-		List<DtoScreenMenu> screenMenuList = new ArrayList<>();
-		Map<String, List<Menu>> mapMenu = new HashMap<>();
-
+	public DtoScreenMenu findChildrenMenu(DtoScreenMenu rootMenu, List<Menu> menuList) {
 		for (Menu menu : menuList) {
-			if (menu.getMenuType().equals(MenuType.MENU)) {
-				screenMenuList.add(new DtoScreenMenu(toDTO(menu)));
-			} 
-			else if (menu.getMenuType().equals(MenuType.FOLDER) && menu.getParentMenu() != null) {
-				String parentId = menu.getParentMenu().getId();
-
-				if (mapMenu.containsKey(parentId)) {
-					mapMenu.put(parentId, addMenuToMap(mapMenu.get(parentId), menu));
-				} else {
-					mapMenu.put(parentId, addMenuToMap(new ArrayList<>(), menu));
-				}
+			if (menu.getParentMenu() != null && rootMenu.getId().equals(menu.getParentMenu().getId())) {
+				rootMenu.getChildren().add(findChildrenMenu(convertDtoScreenMenu(menu), menuList));
 			}
 		}
-		mapMenu.forEach((Key, value) -> {
-			screenMenuList.add(new DtoScreenMenu(toDTO(value.get(0).getParentMenu()), toDTOList(value)));
-		});
-
-		return screenMenuList;
+		return rootMenu;
 	}
+
+	public List<DtoScreenMenu> getRootMenus(List<Menu> menuList) {
+		List<DtoScreenMenu> rootMenus = new ArrayList<>();
+
+		for (Menu menu : menuList) {
+			if (menu.getParentMenu() == null) {
+				rootMenus.add(convertDtoScreenMenu(menu));
+			}
+		}
+		return rootMenus;
+	}
+
+//	public List<Menu> addMenuToMap(List<Menu> menuList, Menu newMenu) {
+//		menuList.add(newMenu);
+//		return menuList;
+//	}
+//
+//	public List<DtoScreenMenu> prepareTreeMenu(List<Menu> menuList) {
+//		List<DtoScreenMenu> screenMenuList = new ArrayList<>();
+//		Map<String, List<Menu>> mapMenu = new HashMap<>();
+//
+//		for (Menu menu : menuList) {
+//			if (menu.getMenuType().equals(MenuType.MENU)) {
+//				screenMenuList.add(new DtoScreenMenu(toDTO(menu)));
+//			} else if (menu.getMenuType().equals(MenuType.FOLDER) && menu.getParentMenu() != null) {
+//				String parentId = menu.getParentMenu().getId();
+//
+//				if (mapMenu.containsKey(parentId)) {
+//					mapMenu.put(parentId, addMenuToMap(mapMenu.get(parentId), menu));
+//				} else {
+//					mapMenu.put(parentId, addMenuToMap(new ArrayList<>(), menu));
+//				}
+//			}
+//		}
+//		mapMenu.forEach((Key, value) -> {
+////			screenMenuList.add(new DtoScreenMenu(toDTO(value.get(0).getParentMenu()), toDTOList(value)));
+//		});
+//
+//		return screenMenuList;
+//	}
 }
