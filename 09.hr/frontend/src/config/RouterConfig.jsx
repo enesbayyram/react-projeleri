@@ -11,6 +11,8 @@ import sessionService from "../services/StorageService";
 import { useDispatch, useSelector } from "react-redux";
 import RoleAuthorization from "../pages/RoleAuthorization";
 import LoginLogoutTrace from "../pages/LoginLogoutTrace";
+import AMenusu from '../pages/AMenusu'
+import BMenusu from '../pages/BMenusu'
 
 function RouterConfig() {
   const { isAuthenticate } = useSelector((store) => store.app);
@@ -36,6 +38,8 @@ function RouterConfig() {
             <Route path="/zimmet-operations" element={<ZimmetOperations />} />
             <Route path="/role-authorization" element={<RoleAuthorization />} />
             <Route path="/login-logout-trace" element={<LoginLogoutTrace />} />
+            <Route path="/a-menusu" element={<AMenusu />} />
+            <Route path="/b-menusu" element={<BMenusu />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="*" element={<Dashboard/>}/>

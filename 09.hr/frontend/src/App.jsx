@@ -24,7 +24,6 @@ function App() {
         .getCurrentUserAuthorizedMenu()
         .then((response) => {
           // SOR BUNLARI
-          //1-enese sor refresh tokendan sonra redux ın null kalması
           //3- Tree Menü yapısı
 
           dispatch(setMenu(response?.data?.data));

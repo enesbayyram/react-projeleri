@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
   const location = useLocation();
 
   return menuService.isAccessMenu(menuList, location.pathname) ?  <Layout children={children} /> :  <Layout children={<Dashboard/>} />;
+
 }
 
 

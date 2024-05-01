@@ -1,6 +1,11 @@
 import axios from "../config/ApiConfig";
 
 class MenuService {
+
+  constructor(result){
+    this.result = result;
+  }
+  
   getCurrentUserAuthorizedMenu = () => {
     return new Promise((resolve, reject) => {
       axios
@@ -10,25 +15,36 @@ class MenuService {
     });
   };
 
+  checkChildren = (parentMenu, destinationPath) => {
+    for (let i = 0; i < parentMenu.children.length; i++) {
+      const child = parentMenu.children[i];
+      if (child.children.length == 0) {
+        if (child.menuLink == destinationPath) {
+          this.result=true;
+          break;
+        }
+      } else {
+        this.checkChildren(child, destinationPath);
+      }
+    }
+  };
+
   isAccessMenu = (menuList, destinationPath) => {
-    let result =false;
-     menuList.map((menu) => {
-      let parentMenu = menu.parentMenu;
-      if(parentMenu.menuType=="MENU"){
-        if(parentMenu.menuLink == destinationPath){
-          result = true;
+    for (let i = 0; i < menuList.length; i++) {
+      if (menuList[i].menuType == "MENU") {
+        if (menuList[i].menuLink == destinationPath) {
+          this.result = true;
+          break;
+        }
+      } else if (menuList[i].menuType == "FOLDER") {
+        this.checkChildren(menuList[i], destinationPath);
+        if (this.result) {
+          break;
         }
       }
-      else if(parentMenu.menuType =="FOLDER"){
-        menu.children.map((child)=>{
-          if(child.menuLink==destinationPath){
-            result=true;
-          }
-        })
-      }
-    });
-    return result;
+    }
+    return this.result;
   };
 }
 
-export default new MenuService();
+export default new MenuService(false);
