@@ -238,7 +238,7 @@ function Sidebar({ children }) {
             <Box
               component="img"
               sx={{ width: "50px", height: "50px" }}
-              src="src/assets/hr-logo.png"
+              src="src/assets/hr-logo-new.png"
             />
           </Link>
         </DrawerHeader>
