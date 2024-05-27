@@ -4,6 +4,7 @@ import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import Dashboard from "../pages/Dashboard";
+import Profile from "../pages/Profile";
 import PersonelOperations from "../pages/PersonelOperations";
 import ZimmetOperations from "../pages/ZimmetOperations";
 import PrivateRoutes from "./PrivateRoutes";
@@ -29,6 +30,7 @@ function RouterConfig() {
   return (
     <div>
       {isAuthenticate ? (
+        <>
         <PrivateRoutes>
           <Routes>
             <Route
@@ -36,17 +38,22 @@ function RouterConfig() {
               element={<PersonelOperations />}
             />
             <Route path="/zimmet-operations" element={<ZimmetOperations />} />
+            <Route path="/profil" element={<Profile />} ></Route>
             <Route path="/role-authorization" element={<RoleAuthorization />} />
             <Route path="/login-logout-trace" element={<LoginLogoutTrace />} />
             <Route path="/a-menusu" element={<AMenusu />} />
             <Route path="/b-menusu" element={<BMenusu />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<RegisterPage />} />
+            
             <Route path="*" element={<Dashboard/>}/>
           </Routes>
         </PrivateRoutes>
+       
+        </>
       ) : (
         <Routes>
+          
            {["/login"].map((path , index)=>  <Route key={index} path={path} element={<LoginPage />} />)}
         </Routes>
       )}

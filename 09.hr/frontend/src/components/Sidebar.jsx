@@ -133,6 +133,10 @@ function Sidebar({ children }) {
     }
   };
 
+  const profile =() =>{
+    navigate("/profil");
+  }
+
   const logout = () => {
     storageService.removeToken();
     storageService.removeRefreshToken();
@@ -219,7 +223,7 @@ function Sidebar({ children }) {
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleClose}><CgProfile className="menu-icon"/> Hesabım</MenuItem>
+        <MenuItem onClick={profile}><CgProfile className="menu-icon"/> Hesabım</MenuItem>
         <MenuItem onClick={handleClose}><IoMdSettings className="menu-icon"/>Ayarlar</MenuItem>
         <MenuItem onClick={logout }><IoLogOutOutline className="menu-icon" /> Çıkış</MenuItem>
       </Menu>
